@@ -1,0 +1,775 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  overflow: hidden;
+  background-color: #171717;
+}
+
+/*スクロールバーのスタイル*/
+.box {
+  --sb-track-color: #232e33;
+  --sb-thumb-color: #717171;
+  --sb-size: 8px;
+  background: #171717;
+  border-radius: 3px;
+}
+
+/* 縦スクロールバーの幅設定 */
+.box::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+/* 横スクロールバーの高さ設定 - 追加 */
+.box::-webkit-scrollbar:horizontal {
+  height: var(--sb-size);
+}
+
+.box::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+  border: 1px solid #232e33;
+}
+
+.box::-webkit-scrollbar-corner {
+  background: #171717;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .box {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    scrollbar-width: thin;
+  }
+}
+
+.eq-panel {
+  --sb-track-color: #232e33;
+  --sb-thumb-color: #717171;
+  --sb-size: 8px;
+  background: #171717;
+  border-radius: 3px;
+}
+
+/* 縦スクロールバーの幅設定 */
+.eq-panel::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+/* 横スクロールバーの高さ設定 - 追加 */
+.eq-panel::-webkit-scrollbar:horizontal {
+  height: var(--sb-size);
+}
+
+.eq-panel::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+  border: 1px solid #232e33;
+}
+
+.eq-panel::-webkit-scrollbar-corner {
+  background: #171717;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .eq-panel {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    scrollbar-width: thin;
+  }
+}
+
+.body {
+  height: 100%;
+  display: flex;
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Light", "Yu Gothic Light",
+    sans-serif;
+}
+
+.border {
+  border: 1px solid #b8b8b8;
+}
+
+.border-shelf {
+  border: 1px solid #b8b8b8;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #171717;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  margin-left: 10%;
+}
+
+/* slideMenuとshelfの動作用スタイル */
+.shelf {
+  width: 50%;
+  height: 100%;
+  background-color: #171717;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: flex-start;
+  box-sizing: border-box;
+  position: absolute; /* 絶対位置に変更 */
+  left: -50%; /* 初期状態では画面外に配置 */
+  top: 0;
+  z-index: 100; /* プレイヤーより前面に表示 */
+  transition: left 0.3s ease; /* スライドアニメーション */
+  border-radius: 0 20px 20px 0;
+}
+
+.shelf.visible {
+  left: 0; /* 表示状態では左端に配置 */
+}
+
+.MKplayer {
+  width: 200px;
+  height: 200px;
+  margin-left: 13%;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+.version {
+  color: #d7d7d7;
+  font-size: small;
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Light", "Yu Gothic Light",
+    sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  align-self: flex-end;
+  margin-right: 10%;
+  margin-bottom: auto;
+}
+
+.box {
+  height: calc(100% - 80px); /* タイトルと境界線の分を引く */
+  width: 90%; /* 幅を拡大 */
+  overflow-y: auto; /* 縦方向のスクロールを有効化 */
+  margin: 0 auto;
+  padding: 0 10px; /* 内側の余白を追加 */
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  padding: 2.5px;
+  cursor: pointer;
+  background: #171717;
+  appearance: none;
+  border: 1px solid #303030;
+  color: #d7d7d7;
+  margin-right: auto;
+  margin-left: 0;
+  justify-content: flex-start;
+  align-self: flex-start;
+}
+
+#file-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  width: 100%;
+}
+
+#file-list li {
+  padding: 8px;
+  color: #d7d7d7;
+  border-bottom: 1px solid #303030;
+  cursor: pointer;
+  font-size: small;
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium",
+    "游ゴシック", "Yu Gothic", sans-serif;
+}
+
+#file-list li:hover {
+  background-color: #303030;
+}
+
+.player-blur {
+  filter: blur(2px);
+}
+
+/* プレイヤーの背景のグラデーション */
+@keyframes hero-gradient-animation {
+  0% {
+    --c-0: hwb(0 100% 0%);
+    --x-0: 16%;
+    --y-0: 15%;
+    --s-start-0: 4.331289506097644%;
+    --s-end-0: 52.684479517737984%;
+  }
+
+  100% {
+    --c-0: hsla(0, 0%, 100%, 0.46);
+    --x-0: 93%;
+    --y-0: 83%;
+    --s-start-0: 15.553901713566411%;
+    --s-end-0: 58.53297469071886%;
+  }
+}
+
+@property --c-0 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: hsla(344, 0%, 100%, 1);
+}
+
+@property --x-0 {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 16%;
+}
+
+@property --y-0 {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 15%;
+}
+
+@property --s-start-0 {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 4.331289506097644%;
+}
+
+@property --s-end-0 {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 52.684479517737984%;
+}
+
+.player {
+  --c-0: hsla(344, 0%, 100%, 1);
+  --x-0: 16%;
+  --y-0: 15%;
+  background-color: rgb(135, 206, 250);
+  background-image: radial-gradient(
+    circle at var(--x-0) var(--y-0),
+    var(--c-0) var(--s-start-0),
+    transparent var(--s-end-0)
+  );
+  animation: hero-gradient-animation 10s linear infinite alternate;
+  background-blend-mode: normal;
+  width: 600px;
+  height: 650px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  display: flex;
+  flex-direction: column; /* 縦方向に配置 */
+  align-items: center; /* 中央揃え */
+  padding: 20px;
+  transition: filter 0.3s ease; /* フィルターの変化をアニメーション */
+}
+
+/* slideMenuボタンのスタイル改善 */
+.slideMenu {
+  position: relative;
+  margin-right: auto;
+  height: 20px;
+  width: 20px;
+  cursor: pointer; /* カーソルをポインターに変更 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px; /* 線の間隔 */
+}
+
+/* ハンバーガーメニュー風の3本線 */
+.slideMenu::before,
+.slideMenu::after,
+.slideMenu span {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 2px;
+  background-color: #ffffff;
+}
+
+.slideMenu span {
+  display: block;
+}
+
+/* applemusicのロゴのスタイル */
+.applemusic {
+  width: auto;
+  height: auto;
+  top: 60px;
+  left: 10px;
+  max-width: 40px;
+  max-height: 40px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  cursor: pointer;
+}
+
+.applemusic img {
+  width: 100%;
+  height: auto;
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+.album-cover {
+  width: 290px;
+  height: 290px;
+  background-color: #ffffff;
+  margin-top: 5%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.album-cover img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+.info {
+  width: 50%;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+.artist {
+  font-size: 18px;
+  color: #555;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+/* プレイヤーコントロール部分の親コンテナを作成 */
+.player-controls {
+  position: relative;
+  width: 80%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* プログレスバーのスタイル改善（input[type="range"]用） */
+.progressbar {
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  margin: 0px auto;
+  border-radius: 3px;
+  overflow: hidden;
+  background: transparent;
+  -webkit-appearance: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer; /* カーソル形状を変更 */
+  z-index: 3; /* 他の要素より前面に表示 */
+  opacity: 0.01;
+}
+
+/* プログレスバーのトラック部分 (Chrome, Safari, Edge) */
+.progressbar::-webkit-slider-runnable-track {
+  background: transparent;
+  border-radius: 0px;
+  height: 6px;
+}
+
+/* プログレスバーのつまみ部分 (Chrome, Safari, Edge) */
+.progressbar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1px; /* スライダーのつまみを細く */
+  height: 6px; /* バーと同じ高さ */
+  background: #1db954;
+  /* グラデーションの色付き部分 */
+  box-shadow: -100vw 0 0 100vw linear-gradient(90deg, #1db954, #4fc3f7);
+  border-radius: 0;
+  cursor: pointer;
+}
+
+/* Mozilla Firefox 向けスタイル */
+.progressbar::-moz-range-track {
+  background: transparent;
+  border-radius: 0px;
+  height: 6px;
+}
+
+.progressbar::-moz-range-thumb {
+  width: 1px;
+  height: 6px;
+  background: #1db954;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+/* プログレスバーの色付き部分をシミュレート */
+.progressbar::-moz-range-progress {
+  background: linear-gradient(90deg, #1db954, #4fc3f7);
+  height: 6px;
+  border-radius: 0px;
+}
+
+/* フォーカス時の輪郭を非表示 */
+.progressbar:focus {
+  outline: none;
+}
+
+/* 時間表示用のコンテナ */
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 5px auto 0;
+  color: #555;
+  font-size: 12px;
+}
+
+.current-time {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+.total-time {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+/* グラデーションオーバーレイ用の新しいスタイル */
+.progress-container {
+  position: relative;
+  width: 80%;
+  height: 6px;
+  margin: 0 auto;
+}
+
+.progress-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: solid;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%; /* JavaScriptで動的に更新 */
+  background: linear-gradient(90deg, #1db954, #4fc3f7);
+  border-radius: solid;
+  transition: width 0.1s ease;
+  z-index: 2;
+}
+
+.progressbar-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* ボリュームコントロールのスタイル修正 */
+.volume-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  top: -25px;
+  right: 45px;
+  z-index: 10;
+  width: 120px;
+}
+
+/* ボリュームスライダーのスタイル（input要素自体に.volumeクラスが付いている） */
+.volume {
+  width: 0; /* 初期幅を設定 */
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid skyblue;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  margin: 0;
+}
+
+/* ホバー時のスタイル */
+.volume-container:hover .volume {
+  width: 80px; /* ホバー時に幅を拡大 */
+}
+
+/* スライダーのつまみの部分 */
+.volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  background: #4fc3f7;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Firefox用のつまみスタイル */
+.volume::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  background: #4fc3f7;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+#volumelabel {
+  color: #555;
+  font-size: 12px;
+  width: 25px;
+  margin-right: 5px;
+  text-align: center;
+  display: inline-block;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+}
+
+/* EQボタンスタイル */
+.EQMenu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 101;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.EQMenu:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* EQパネル - 右から表示されるスタイル */
+.eq-panel {
+  position: fixed;
+  top: 0;
+  right: -300px; /* 初期状態では画面外 */
+  width: 280px;
+  height: 100%;
+  background-color: rgba(23, 23, 23, 0.95);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transition: right 0.3s ease; /* スムーズなアニメーション */
+  color: #d7d7d7;
+}
+
+.eq-panel.visible {
+  right: 0; /* 表示状態 */
+}
+
+.eq-panel h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* EQコントロール */
+.eq-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.eq-band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eq-band label {
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.eq-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+}
+
+.eq-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4fc3f7;
+  cursor: pointer;
+}
+
+.eq-value {
+  font-size: 10px;
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* プリセットボタン */
+.eq-presets {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.eq-preset {
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #d7d7d7;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.eq-preset:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.eq-init-button {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 15px;
+  background-color: rgba(79, 195, 247, 0.3);
+  color: #d7d7d7;
+  border: 1px solid rgba(79, 195, 247, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.eq-init-button:hover {
+  background-color: rgba(79, 195, 247, 0.5);
+}
+
+.eq-reset {
+  background-color: #ffffff; /* ボタンの背景色 */
+  color: #000000; /* テキストの色 */
+  padding: 5px 10px; /* パディング */
+  border: none; /* ボーダーを削除 */
+  border-radius: 5px; /* 角を丸く */
+  cursor: pointer; /* カーソルをポインターに */
+  transition: background-color 0.3s; /* 背景色の変化をアニメーション */
+}
+
+.eq-reset:hover {
+  background-color: #d7d7d7; /* ホバー時の背景色 */
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(23, 23, 23, 0.33);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.controls img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin: 0 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}

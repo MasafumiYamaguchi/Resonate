@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resonate</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="body">
+      <div class="shelf">
+        <img src="assets/icon.png" alt="Resonate" class="MKplayer" />
+        <p class="version">ver 1.0.0</p>
+        <div class="border-shelf"></div>
+        <div class="buttons">
+          <button id="back" class="back">Back</button>
+        </div>
+        <div class="box">
+          <ul id="file-list"></ul>
+          <!-- ファイルリストを表示するためのul要素 -->
+        </div>
+      </div>
+
+      <div class="player">
+        <div class="slideMenu"><span></span></div>
+        <div class="applemusic"><img src="assets/applemusic.png" /></div>
+        <div class="album-cover">
+          <img src="assets/sample.png" alt="Album Cover" />
+        </div>
+        <div class="info">
+          <div class="title">title</div>
+          <div class="artist">artist</div>
+        </div>
+        <div class="player-controls">
+          <div class="volume-container">
+            <label id="volumelabel">100</label>
+            <input
+              type="range"
+              id="volume"
+              class="volume"
+              value="1"
+              min="0"
+              max="1"
+              step="0.01"
+            />
+          </div>
+          <div class="progress-container">
+            <div class="progress-background"></div>
+            <div class="progress-fill"></div>
+            <input
+              type="range"
+              class="progressbar"
+              value="0"
+              min="0"
+              max="100"
+              step="0.1"
+            />
+          </div>
+
+          <div class="time-display">
+            <span class="current-time">00:00</span>
+            <span class="total-time">00:00</span>
+          </div>
+        </div>
+        <div class="controls">
+          <img src="assets/prev.png" alt="Prev" id="prev" />
+          <img src="assets/play.png" alt="Play" id="play" />
+          <img src="assets/pause.png" alt="Pause" id="pause" />
+          <img src="assets/next.png" alt="Next" id="next" />
+        </div>
+      </div>
+      <audio id="audio-player"></audio>
+      <button class="EQMenu">EQ</button>
+      <div class="eq-panel">
+        <h3>Equalizer Settings</h3>
+        <div class="eq-controls">
+          <div class="eq-band">
+            <label>60Hz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="60"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+          <div class="eq-band">
+            <label>150Hz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="150"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+          <div class="eq-band">
+            <label>400Hz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="400"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+          <div class="eq-band">
+            <label>1kHz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="1000"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+          <div class="eq-band">
+            <label>2.4kHz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="2400"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+          <div class="eq-band">
+            <label>6kHz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="6000"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+          <div class="eq-band">
+            <label>15kHz</label>
+            <input
+              type="range"
+              class="eq-slider"
+              data-frequency="15000"
+              min="-12"
+              max="12"
+              value="0"
+              step="1"
+            />
+            <span class="eq-value">0 dB</span>
+          </div>
+        </div>
+        <div class="eq-presets">
+          <button class="eq-preset" data-preset="flat">Flat</button>
+          <button class="eq-preset" data-preset="bass">Bass</button>
+          <button class="eq-preset" data-preset="vocal">Vocal</button>
+        </div>
+      </div>
+    </div>
+    <div class="AMtab"></div>
+    <script src="renderer.js"></script>
+    <script></script>
+  </body>
+</html>
