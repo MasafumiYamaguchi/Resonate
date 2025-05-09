@@ -20,6 +20,7 @@ function createWindow() {
     width: 600,
     height: 650,
     maximizable: false,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -58,7 +59,6 @@ function createMenu() {
 }
 
 app.whenReady().then(() => {
-  createWindow();
   createMenu();
 });
 
@@ -166,18 +166,33 @@ ipcMain.handle("load-metadata", async (event, filePath) => {
 });
 
 //AppleMusicボタンが押されたときの処理
-ipcMain.on("open-applemusic", (event) => {
+ipcMain.on("open-spotify", (event) => {
   win = BrowserWindow.getFocusedWindow();
-  win.setResizable(true);
   if (win) {
     isExpanded = !isExpanded;
-    if (isExpanded) {
-      win.setSize(1200, 650);
-      win.webContents.send("open-AMtab");
-    } else {
-      win.setSize(600, 650);
-      win.webContents.send("close-AMtab");
-    }
+    
+    // リサイズ処理を関数にまとめる
+    const resizeWindow = () => {
+      win.setResizable(true);
+      if (isExpanded) {
+        win.setSize(1200, 650);
+        win.webContents.send("open-AMtab");
+      } else {
+        win.setSize(600, 650);
+        win.webContents.send("close-AMtab");
+      }
+      win.setResizable(false);
+    };
+
   }
-  win.setResizable(false);
+});
+
+// ウィンドウ移動中のサイズ変更を防ぐ
+app.whenReady().then(() => {
+  createWindow();
+  createMenu();
+  
+  // ウィンドウのドラッグ操作を監視
+  win.on('will-move', () => {
+  });
 });
