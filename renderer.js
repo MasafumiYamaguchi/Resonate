@@ -39,7 +39,7 @@ function initializePlayer() {
   artistElement = document.querySelector(".artist");
   albumCoverElement = document.querySelector(".album-cover");
   applemusic = document.querySelector(".applemusic");
-  AMtab = document.querySelector(".AMtab");
+  SPtab = document.querySelector(".SPtab");
 
   // デバッグ情報を表示
   console.log("DOM要素の取得状況:");
@@ -682,8 +682,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const slideMenu = document.querySelector(".slideMenu");
   const shelf = document.querySelector(".shelf");
   const player = document.querySelector(".player");
-  const applemusic = document.querySelector(".applemusic");
-  const AMtab = document.querySelector(".AMtab");
+  const spotify = document.querySelector(".spotify");
+  const SPtab = document.querySelector(".SPtab");
 
   slideMenu.addEventListener("click", function () {
     const isVisible = shelf.classList.contains("visible");
@@ -829,8 +829,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   //applemusicボタンを押したときの処理
-  applemusic.addEventListener("click", function () {
-    ipcRenderer.send("open-applemusic");
+  spotify.addEventListener("click", function () {
+    ipcRenderer.send("open-spotify");
   });
 
   const progressContainer = document.querySelector(".progress-container");
@@ -948,7 +948,7 @@ progressBar.addEventListener("change", function () {
 });
 
 //main側でのウィンドウサイズ変更を受け取る
-ipcRenderer.on("open-AMtab", (event) => {
+ipcRenderer.on("open-SPtab", (event) => {
   const appContainer = document.querySelector(".body");
   const player = document.querySelector(".player");
 
@@ -958,7 +958,7 @@ ipcRenderer.on("open-AMtab", (event) => {
   player.style.width = `${halfWidth}px`;
   player.style.height = "100%";
 
-  AMtab.style.width = `${halfWidth}px`;
-  AMtab.style.height = "100%";
-  AMtab.style.zIndex = "100"; // 他の要素より前面に表示
+  SPtab.style.width = `${halfWidth}px`;
+  SPtab.style.height = "100%";
+  SPtab.style.zIndex = "100"; // 他の要素より前面に表示
 });
